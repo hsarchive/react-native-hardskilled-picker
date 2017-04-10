@@ -1,6 +1,6 @@
 {
   "name": "react-native-hardskilled-picker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Picker for array with advanced features",
   "main": "index.js",
   "scripts": {

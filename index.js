@@ -162,6 +162,15 @@ export default class RNP extends Component {
         this.setState({ current: item });
     }
 
+    clearTimeoutAction() {
+        clearTimeout(timer);
+        timer = null;
+    }
+
+    handlerMomentumScrollBegin() {
+        this.clearTimeoutAction();
+    }
+
     handlerMomentumScrollEnd(event, immediate) {
         const _this = this;
         const position = calculatePosition(event);
@@ -174,10 +183,9 @@ export default class RNP extends Component {
             }
         };
 
-        clearTimeout(timer);
+        this.clearTimeoutAction();
 
         if (immediate) {
-            timer = null;
             momentum();
         } else {
             timer = setTimeout(momentum, 200);
@@ -225,6 +233,7 @@ export default class RNP extends Component {
                         showsVerticalScrollIndicator={false}
                         scrollEventThrottle={16}
                         style={this.styles.containerScrollable}
+                        onMomentumScrollBegin={(event) => this.handlerMomentumScrollBegin()}
                         onMomentumScrollEnd={(event) => this.handlerMomentumScrollEnd(event, true)}
                         onScrollEndDrag={(event) => this.handlerMomentumScrollEnd(event)}
                         onScroll={(event) => this.handlerScroll(event)}
