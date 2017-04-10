@@ -1,0 +1,34 @@
+{
+  "name": "react-native-hardskilled-picker",
+  "version": "0.0.1",
+  "description": "Picker for array with advanced features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hardskilled/react-native-hardskilled-picker.git"
+  },
+  "keywords": [
+    "react-native",
+    "android",
+    "ios",
+    "array",
+    "slider",
+    "selector",
+    "picker"
+  ],
+  "author": {
+    "name": "Hardskilled",
+    "email": "roman@hardskilled.com"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hardskilled/react-native-hardskilled-picker/issues"
+  },
+  "homepage": "https://github.com/hardskilled/react-native-hardskilled-picker#readme"
+}
