@@ -141,9 +141,7 @@ export default class RNP extends Component {
 
     renderList(array) {
         const getStyle = (index) => {
-            const current = index === this.state.current ? {
-                fontWeight: 'bold'
-            } : {};
+            const current = (index === this.state.current) ? this.style.currentText : {};
 
             return {
                 ...styles.textItem,
