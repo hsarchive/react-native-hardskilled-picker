@@ -151,7 +151,7 @@ export default class RNP extends Component {
         };
 
         return array.map((value, index) =>
-            <View style={this.styles.textItem} key={index}>
+            <View style={this.styles.viewItem} key={index}>
                 <Text style={getStyle(index)}>{value.label}</Text>
             </View>
         );
