@@ -141,7 +141,7 @@ export default class RNP extends Component {
 
     renderList(array) {
         const getStyle = (index) => {
-            const current = (index === this.state.current) ? this.style.currentText : {};
+            const current = (index === this.state.current) ? this.styles.currentText : {};
 
             return {
                 ...styles.textItem,
