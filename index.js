@@ -135,7 +135,7 @@ export default class RNP extends Component {
         this.onChange = props.onChange;
 
         this.upButton = props.upButton || <Text>Up</Text>;
-        this.downButton = props.upButton || <Text>Down</Text>;
+        this.downButton = props.downButton || <Text>Down</Text>;
 
     }
 
