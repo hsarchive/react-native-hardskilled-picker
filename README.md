@@ -29,16 +29,22 @@ class Example extends React.Component {
     console.warn(item.label);
   }
 
-  render() {
-    const upButton = <Text>Woo UP!</text>
-    const downButton = <Text>Woo DOWN!</text>
+  upButton {
+    return <Text>Woo UP!</text>;
+  }
 
+  downButton {
+    return <Text>Woo DOWN!</text>;
+  }
+
+  render() {
     return (
       <Picker
           array={this.state.array}
+          elements={5}
           onChange={this.handlerOnChange}
-          upButton={upButton}
-          downButton={downButton}
+          upButton={this.upButton()}
+          downButton={this.downButton()}
           buttonsStyles={{ backgroundColor: 'red' }}
           currentTextStyles={{ color: 'orange' }}
           currentTopStyles={{ borderTopColor: 'orange' }}

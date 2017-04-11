@@ -68,8 +68,6 @@ const calculatePosition = (event) => {
 };
 
 const prepareStyle = (countElements, offsetElement, props) => {
-    const currentPositionBlock = parseInt(styles.containerWithScroll.height / 2);
-
     styles.buttons = {
         ...styles.buttons,
         ...props.buttonsStyles
@@ -100,6 +98,9 @@ const prepareStyle = (countElements, offsetElement, props) => {
         ...props.viewItemStyles
     };
 
+    styles.containerWithScroll.height = styles.textItem.height * countElements;
+    const currentPositionBlock = parseInt(styles.containerWithScroll.height / 2);
+
     styles.currentTop = {
         ...styles.currentTop,
         top: currentPositionBlock - styles.textItem.height / 2
@@ -109,8 +110,6 @@ const prepareStyle = (countElements, offsetElement, props) => {
         ...styles.currentBottom,
         top: currentPositionBlock + styles.textItem.height / 2
     };
-
-    styles.containerWithScroll.height = styles.textItem.height * countElements;
 
     styles.emptyBlock = {
         paddingTop: offsetElement * styles.textItem.height
@@ -127,10 +126,11 @@ export default class RNP extends Component {
     constructor(props) {
         super(props);
 
+        this.countElements = props.elements || 3;
+        this.offsetElement = (this.countElements - 1) / 2;
+
         this.styles = prepareStyle(this.countElements, this.offsetElement, props);
 
-        this.countElements = 3;
-        this.offsetElement = (this.countElements - 1) / 2;
         this.array = props.array;
         this.onChange = props.onChange;
 
