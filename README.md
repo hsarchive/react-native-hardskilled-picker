@@ -13,7 +13,7 @@ const downButton = () => (<Text>Woo DOWN!</Text>);
 class Example extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [] };
+    this.state = { array: [] };
   }
 
   componentWillMount() {
@@ -23,7 +23,7 @@ class Example extends React.Component {
     }
 
     this.setState({
-      messages: array,
+      array: array
     });
   }
 
@@ -35,18 +35,18 @@ class Example extends React.Component {
   render() {
     return (
       <Picker
-          array={this.state.array}
-          elements={5}
-          onChange={this.handlerOnChange}
-          upButton={this.upButton()}
-          downButton={this.downButton()}
-          buttonsStyles={{ backgroundColor: 'red' }}
-          currentTextStyles={{ color: 'orange' }}
-          currentTopStyles={{ borderTopColor: 'orange' }}
-          currentBottomStyles={{ borderBottomColor: 'orange' }}
-          textItem={{ fontSize: 20 }}
-          viewItem={{ height: 26 }}
-          value={5}
+          array={this.state.array} // List of elements
+          elements={5} // Number of elements shown 
+          onChange={this.handlerOnChange} // onChange callback
+          upButton={this.upButton()} // Component for "up" button
+          downButton={this.downButton()} // Component for "down" button
+          buttonsStyles={{ backgroundColor: 'red' }} // Style for button
+          currentTextStyles={{ color: 'orange' }} // Style for current element
+          currentTopStyles={{ borderTopColor: 'orange' }} // Style for top border
+          currentBottomStyles={{ borderBottomColor: 'orange' }} // Style for bottom border
+          textItem={{ fontSize: 20 }} // Text item style
+          viewItem={{ height: 26 }} // View item style
+          value={5} // Default value
         />
     );
   }
