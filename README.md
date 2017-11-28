@@ -7,6 +7,9 @@
 ```jsx
 import Picker from 'react-native-hardskilled-picker';
 
+const upButton = () => (<Text>Woo UP!</Text>);
+const downButton = () => (<Text>Woo DOWN!</Text>);
+
 class Example extends React.Component {
   constructor(props) {
     super(props);
@@ -29,14 +32,6 @@ class Example extends React.Component {
     console.warn(item.label);
   }
 
-  upButton {
-    return <Text>Woo UP!</text>;
-  }
-
-  downButton {
-    return <Text>Woo DOWN!</text>;
-  }
-
   render() {
     return (
       <Picker
@@ -51,6 +46,7 @@ class Example extends React.Component {
           currentBottomStyles={{ borderBottomColor: 'orange' }}
           textItem={{ fontSize: 20 }}
           viewItem={{ height: 26 }}
+          value={5}
         />
     );
   }

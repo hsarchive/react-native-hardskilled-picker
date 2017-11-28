@@ -118,47 +118,62 @@ const prepareStyle = (countElements, offsetElement, props) => {
     return StyleSheet.create(styles);
 };
 
-export default class RNP extends Component {
-    state = {
-        current: 0
-    };
+const upButton = () => (<Text>Up!</Text>);
+const downButton = () => (<Text>Down!</Text>);
 
+export default class ReactNativeHardskilledPicker extends Component {
     constructor(props) {
         super(props);
 
         this.countElements = props.elements || 3;
         this.offsetElement = (this.countElements - 1) / 2;
-
         this.styles = prepareStyle(this.countElements, this.offsetElement, props);
+        this.currentIndex = props.array.findIndex((element) => element.value === props.value) || 0;
 
-        this.array = props.array;
-        this.onChange = props.onChange;
+        this.state = {
+            array: props.array,
+            height: styles.textItem.height,
+            upButton: props.upButton || upButton,
+            downButton: props.downButton || downButton,
+            onChange: props.onChange
+        };
+    }
 
-        this.upButton = props.upButton || <Text>Up</Text>;
-        this.downButton = props.downButton || <Text>Down</Text>;
+    componentDidMount() {
+        this.setInitialItem(this.currentIndex)
+    }
 
+    componentWillReceiveProps(props) {
+        const item = this.state.array.findIndex((element) => element.value === props.value);
+
+        if (item !== this.currentIndex) {
+            this.setInitialItem(item)
+        }
     }
 
     renderList(array) {
-        const getStyle = (index) => {
-            const current = (index === this.state.current) ? styles.currentText : {};
+        return array.map((value, index) => {
+            const current = (index === this.currentIndex) ? styles.currentText : {};
 
-            return {
-                ...styles.textItem,
-                ...current
-            }
-        };
+            return (
+                <View style={this.styles.viewItem} key={index}>
+                    <Text style={[styles.textItem, current]}>{value.label}</Text>
+                </View>
+            );
+        });
+    }
 
-        return array.map((value, index) =>
-            <View style={this.styles.viewItem} key={index}>
-                <Text style={getStyle(index)}>{value.label}</Text>
-            </View>
-        );
+    setInitialItem(item) {
+        this.currentIndex = item;
+
+        setTimeout(() => (
+            this.refs.ScrollContainer.scrollTo({ y: item * this.state.height }, { animated: false })
+        ), 0);
     }
 
     selectItem(item) {
-        this.onChange(this.array[item]);
-        this.setState({ current: item });
+        this.currentIndex = item;
+        this.state.onChange(this.state.array[item]);
     }
 
     clearTimeoutAction() {
@@ -171,14 +186,13 @@ export default class RNP extends Component {
     }
 
     handlerMomentumScrollEnd(event, immediate) {
-        const _this = this;
         const position = calculatePosition(event);
 
         const momentum = () => {
-            _this.refs.ScrollContainer.scrollTo({ y: position.item * position.height });
+            this.refs.ScrollContainer.scrollTo({ y: position.item * position.height });
 
-            if (_this.state.current === position.item) {
-                _this.selectItem(position.item);
+            if (this.currentIndex === position.item) {
+                this.selectItem(position.item);
             }
         };
 
@@ -192,38 +206,37 @@ export default class RNP extends Component {
     }
 
     handlerScrollUp() {
-        if (this.state.current === 0) return;
+        if (this.currentIndex === 0) return;
 
-        const height = styles.textItem.height;
-        const item = this.state.current - 1;
+        const item = this.currentIndex - 1;
 
+        this.refs.ScrollContainer.scrollTo({ y: this.state.height * item });
         this.selectItem(item);
-        this.refs.ScrollContainer.scrollTo({ y: height * item });
     }
 
     handlerScrollDown() {
-        if (this.state.current === this.array.length - 1) return;
+        if (this.currentIndex === this.state.array.length - 1) return;
 
-        const height = styles.textItem.height;
-        const item = this.state.current + 1;
+        const item = this.currentIndex + 1;
 
+        this.refs.ScrollContainer.scrollTo({ y: this.state.height * item });
         this.selectItem(item);
-
-        this.refs.ScrollContainer.scrollTo({ y: height * item });
     }
 
     handlerScroll(event) {
         const position = calculatePosition(event);
-        this.setState({ current: position.item });
+        this.currentIndex = position.item;
     }
 
     render() {
+        const renderList = this.renderList(this.state.array);
+
         return (
             <View style={this.styles.container}>
                 <TouchableOpacity
                     onPress={() => this.handlerScrollUp()}
                     style={this.styles.buttons}>
-                    {this.upButton}
+                    {this.state.upButton}
                 </TouchableOpacity>
                 <View style={this.styles.containerWithScroll}>
                     <ScrollView
@@ -238,7 +251,7 @@ export default class RNP extends Component {
                         onScroll={(event) => this.handlerScroll(event)}
                         overScrollMode="never">
                         <View style={this.styles.emptyBlock} />
-                        {this.renderList(this.array)}
+                        {renderList}
                         <View style={this.styles.emptyBlock} />
                     </ScrollView>
                     <View style={this.styles.currentTop} />
@@ -247,7 +260,7 @@ export default class RNP extends Component {
                 <TouchableOpacity
                     onPress={() => this.handlerScrollDown()}
                     style={this.styles.buttons}>
-                    {this.downButton}
+                    {this.state.downButton}
                 </TouchableOpacity>
             </View>
         );
