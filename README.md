@@ -11,10 +11,7 @@ import React, { Component } from 'react';
 import { Text } from 'react-native';
 import Picker from 'react-native-hardskilled-picker';
 
-const upButton = () => (<Text>Woo UP!</Text>);
-const downButton = () => (<Text>Woo DOWN!</Text>);
-
-export defautl class Example extends Component {
+export default class Example extends Component {
     constructor(props) {
         super(props);
         this.state = { array: [] };
@@ -32,8 +29,7 @@ export defautl class Example extends Component {
     }
 
     handlerOnChange(item) {
-        console.warn(item.value);
-        console.warn(item.label);
+        console.warn(item);
     }
 
     render() {
@@ -42,9 +38,9 @@ export defautl class Example extends Component {
                 array={this.state.array} // List of elements
                 elements={5} // Number of elements shown
                 onChange={this.handlerOnChange} // onChange callback
-                upButton={this.upButton()} // Component for "up" button
-                downButton={this.downButton()} // Component for "down" button
-                buttonsStyles={{ backgroundColor: 'red' }} // Style for button
+                upButton={<Text>Woo UP!</Text>} // Component for "up" button
+                downButton={<Text>Woo Down!</Text>} // Component for "down" button
+                buttonsStyles={{ backgroundColor: '#ccc' }} // Style for button
                 currentTextStyles={{ color: 'orange' }} // Style for current element
                 currentTopStyles={{ borderTopColor: 'orange' }} // Style for top border
                 currentBottomStyles={{ borderBottomColor: 'orange' }} // Style for bottom border
