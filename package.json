@@ -1,7 +1,7 @@
 {
   "name": "react-native-hardskilled-picker",
-  "version": "0.1.0",
-  "description": "Picker for array with advanced features",
+  "version": "0.1.1",
+  "description": "React Native Data Picker for array with advanced features",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +15,7 @@
     "android",
     "ios",
     "array",
+    "data",
     "slider",
     "selector",
     "picker"

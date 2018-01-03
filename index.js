@@ -68,48 +68,23 @@ const calculatePosition = (event) => {
 };
 
 const prepareStyle = (countElements, offsetElement, props) => {
-    styles.buttons = {
-        ...styles.buttons,
-        ...props.buttonsStyles
-    };
-
-    styles.currentText = {
-        ...styles.currentText,
-        ...props.currentTextStyles
-    };
-
-    styles.currentTop = {
-        ...styles.currentTop,
-        ...props.currentTopStyles
-    };
-
-    styles.currentBottom = {
-        ...styles.currentBottom,
-        ...props.currentBottomStyles
-    };
-
-    styles.textItem = {
-        ...styles.textItem,
-        ...props.textItemStyles
-    };
-
-    styles.viewItem = {
-        ...styles.viewItem,
-        ...props.viewItemStyles
-    };
+    styles.buttons = Object.assign(styles.buttons, props.buttonsStyles)
+    styles.currentText = Object.assign(styles.currentText, props.currentTextStyles)
+    styles.currentTop = Object.assign(styles.currentTop, props.currentTopStyles)
+    styles.currentBottom = Object.assign(styles.currentBottom, props.currentBottomStyles)
+    styles.textItem = Object.assign(styles.textItem, props.textItemStyles)
+    styles.viewItem = Object.assign(styles.viewItem, props.viewItemStyles)
 
     styles.containerWithScroll.height = styles.textItem.height * countElements;
+    
     const currentPositionBlock = parseInt(styles.containerWithScroll.height / 2);
-
-    styles.currentTop = {
-        ...styles.currentTop,
+    styles.currentTop = Object.assign(styles.currentTop, {
         top: currentPositionBlock - styles.textItem.height / 2
-    };
+    })
 
-    styles.currentBottom = {
-        ...styles.currentBottom,
+    styles.currentBottom = Object.assign(styles.currentBottom, {
         top: currentPositionBlock + styles.textItem.height / 2
-    };
+    })
 
     styles.emptyBlock = {
         paddingTop: offsetElement * styles.textItem.height
