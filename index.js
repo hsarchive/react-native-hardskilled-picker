@@ -76,7 +76,7 @@ const prepareStyle = (countElements, offsetElement, props) => {
     styles.viewItem = Object.assign(styles.viewItem, props.viewItemStyles)
 
     styles.containerWithScroll.height = styles.textItem.height * countElements;
-    
+
     const currentPositionBlock = parseInt(styles.containerWithScroll.height / 2);
     styles.currentTop = Object.assign(styles.currentTop, {
         top: currentPositionBlock - styles.textItem.height / 2
@@ -103,9 +103,9 @@ export default class ReactNativeHardskilledPicker extends Component {
         this.countElements = props.elements || 3;
         this.offsetElement = (this.countElements - 1) / 2;
         this.styles = prepareStyle(this.countElements, this.offsetElement, props);
-        this.currentIndex = props.array.findIndex((element) => element.value === props.value) || 0;
 
         this.state = {
+            currentIndex: props.array.findIndex((element) => element.value === props.value) || 0,
             array: props.array,
             height: styles.textItem.height,
             upButton: props.upButton || upButton,
@@ -115,20 +115,20 @@ export default class ReactNativeHardskilledPicker extends Component {
     }
 
     componentDidMount() {
-        this.setInitialItem(this.currentIndex)
+        this.scrollToItem()
     }
 
     componentWillReceiveProps(props) {
         const item = this.state.array.findIndex((element) => element.value === props.value);
 
-        if (item !== this.currentIndex) {
-            this.setInitialItem(item)
+        if (item !== this.state.currentIndex) {
+            this.setState({ currentIndex: item }, () => this.scrollToItem())
         }
     }
 
     renderList(array) {
         return array.map((value, index) => {
-            const current = (index === this.currentIndex) ? styles.currentText : {};
+            const current = (index === this.state.currentIndex) ? styles.currentText : {};
 
             return (
                 <View style={this.styles.viewItem} key={index}>
@@ -138,16 +138,12 @@ export default class ReactNativeHardskilledPicker extends Component {
         });
     }
 
-    setInitialItem(item) {
-        this.currentIndex = item;
-
-        setTimeout(() => (
-            this.refs.ScrollContainer.scrollTo({ y: item * this.state.height }, { animated: false })
-        ), 0);
+    scrollToItem() {
+        this.refs.ScrollContainer.scrollTo({ y: this.state.currentIndex * this.state.height }, { animated: false })
     }
 
     selectItem(item) {
-        this.currentIndex = item;
+        this.setState({ currentIndex: item })
         this.state.onChange(this.state.array[item]);
     }
 
@@ -166,7 +162,7 @@ export default class ReactNativeHardskilledPicker extends Component {
         const momentum = () => {
             this.refs.ScrollContainer.scrollTo({ y: position.item * position.height });
 
-            if (this.currentIndex === position.item) {
+            if (this.state.currentIndex === position.item) {
                 this.selectItem(position.item);
             }
         };
@@ -181,18 +177,18 @@ export default class ReactNativeHardskilledPicker extends Component {
     }
 
     handlerScrollUp() {
-        if (this.currentIndex === 0) return;
+        if (this.state.currentIndex === 0) return;
 
-        const item = this.currentIndex - 1;
+        const item = this.state.currentIndex - 1;
 
         this.refs.ScrollContainer.scrollTo({ y: this.state.height * item });
         this.selectItem(item);
     }
 
     handlerScrollDown() {
-        if (this.currentIndex === this.state.array.length - 1) return;
+        if (this.state.currentIndex === this.state.array.length - 1) return;
 
-        const item = this.currentIndex + 1;
+        const item = this.state.currentIndex + 1;
 
         this.refs.ScrollContainer.scrollTo({ y: this.state.height * item });
         this.selectItem(item);
@@ -200,7 +196,7 @@ export default class ReactNativeHardskilledPicker extends Component {
 
     handlerScroll(event) {
         const position = calculatePosition(event);
-        this.currentIndex = position.item;
+        this.setState({ currentIndex: position.item })
     }
 
     render() {
@@ -224,7 +220,8 @@ export default class ReactNativeHardskilledPicker extends Component {
                         onMomentumScrollEnd={(event) => this.handlerMomentumScrollEnd(event, true)}
                         onScrollEndDrag={(event) => this.handlerMomentumScrollEnd(event)}
                         onScroll={(event) => this.handlerScroll(event)}
-                        overScrollMode="never">
+                        overScrollMode="never"
+                        onContentSizeChange={() => this.scrollToItem()}>
                         <View style={this.styles.emptyBlock} />
                         {renderList}
                         <View style={this.styles.emptyBlock} />
